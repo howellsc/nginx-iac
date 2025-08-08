@@ -1,5 +1,5 @@
 locals {
-  nginx_image = "us-docker.pkg.dev/gcr.io/${var.project_id}/nginx-static-site:v1"
+  nginx_image = "gcr.io/${var.project_id}/nginx-static-site:v1"
 }
 
 # Create the service account
