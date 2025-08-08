@@ -48,13 +48,14 @@ resource "google_compute_instance" "nginx" {
   }
 
   service_account {
-    email  = google_service_account.vm_sa.email
+    email = google_service_account.vm_sa.email
     scopes = ["cloud-platform"]
   }
 
   tags = [
     "allow-http-80-ingress",
-    "allow-tcp-22-ingress"
+    "allow-tcp-22-ingress",
+    "allow-https-443-egress"
   ]
 
   metadata = {

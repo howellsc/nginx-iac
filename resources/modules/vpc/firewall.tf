@@ -1,4 +1,4 @@
-resource "google_compute_firewall" "http" {
+resource "google_compute_firewall" "http-ingress" {
 
   allow {
     ports = [
@@ -24,7 +24,33 @@ resource "google_compute_firewall" "http" {
   }
 }
 
-resource "google_compute_firewall" "ssh" {
+resource "google_compute_firewall" "https-egress" {
+
+  allow {
+    ports = [
+      "443"
+    ]
+    protocol = "tcp"
+  }
+
+  direction = "EGRESS"
+  name      = "vpc-http-ingress"
+  network   = google_compute_network.vpc.id
+  priority  = 1000
+  source_ranges = [
+    "0.0.0.0/0"
+  ]
+  target_tags = [
+    "allow-https-443-egress"
+  ]
+  source_tags = []
+
+  lifecycle {
+    replace_triggered_by = [google_compute_network.vpc]
+  }
+}
+
+resource "google_compute_firewall" "ssh-ingress" {
   allow {
     ports = [
       "22",
