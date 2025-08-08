@@ -1,5 +1,5 @@
 locals {
-  state_bucket_region = "europe-west2"
+  state_bucket_region = var.region
 }
 
 provider "google" {
@@ -9,10 +9,11 @@ provider "google" {
 }
 
 terraform {
-  backend "gcs" {
-    bucket = "${var.project_id}-terraform-state"
-    prefix = "terraform/tfstate"
-  }
+  # backend "gcs" {
+  #   bucket = "terraform-state"
+  #   prefix = "terraform/tfstate"
+  # }
+  backend "local" {}
 }
 
 resource "google_storage_bucket" "external_state" {
@@ -25,7 +26,6 @@ module "gce_instances" {
   source = "./modules/instances"
 
   project_id      = var.project_id
-  region          = var.region
   zone            = var.zone
   vpc_name        = module.vpc_network.vpc_name
   vpc_subnet_name = module.vpc_network.vpc_subnet_name

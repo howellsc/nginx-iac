@@ -3,7 +3,7 @@ locals {
 }
 
 data "template_file" "nginx_startup_script" {
-  template = file("${path.module}/scripts/startup.sh.tmpl")
+  template = file("${path.module}/scripts/start-container.sh.tmpl")
   vars = {
     container_name = "nginx"
     image          = local.nginx_image

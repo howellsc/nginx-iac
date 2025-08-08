@@ -3,23 +3,15 @@ variable "project_id" {
   type        = string
 }
 
-variable "vpc_name" {
-  description = "VPC Name"
-  type        = string
-}
-
-variable "vpc_subnet_name" {
-  description = "VPC subnet name"
-  type        = string
-}
-
 variable "region" {
   description = "The region where resources will be created"
   type        = string
+  default     = "europe-west2"
   # Default value
 }
 
 variable "zone" {
   description = "The zone where resources will be created"
   type        = string
+  default     = "europe-west2-a"
 }

@@ -13,12 +13,6 @@ variable "vpc_subnet_name" {
   type        = string
 }
 
-variable "region" {
-  description = "The region where resources will be created"
-  type        = string
-  # Default value
-}
-
 variable "zone" {
   description = "The zone where resources will be created"
   type        = string
