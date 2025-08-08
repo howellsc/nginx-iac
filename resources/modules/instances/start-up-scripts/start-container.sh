@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# A name for the container and image
+CONTAINER_NAME="${container_name}"
+IMAGE="${image}"
+
+# Stop and remove the container if it exists
+docker stop $CONTAINER_NAME || true
+docker rm $CONTAINER_NAME || true
+
+# Pull the latest version of the container image
+docker pull $IMAGE
+
+# Run docker container
+docker run $IMAGE
