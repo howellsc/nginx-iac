@@ -16,7 +16,7 @@ resource "google_project_iam_member" "gcr_access" {
 }
 
 resource "google_artifact_registry_repository_iam_binding" "artifact_registry_access" {
-  members     = "serviceAccount:${google_service_account.vm_sa.email}"
+  members = ["serviceAccount:${google_service_account.vm_sa.email}"]
   location   = "us"
   repository = "gcr.io/${var.project_id}"
   role       = "roles/artifactregistry.reader"
