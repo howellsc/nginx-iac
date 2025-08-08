@@ -12,4 +12,4 @@ docker rm $CONTAINER_NAME || true
 docker pull $IMAGE
 
 # Run docker container
-docker run $IMAGE
+docker run --name $CONTAINER_NAME $IMAGE
