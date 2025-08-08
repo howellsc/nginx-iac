@@ -34,7 +34,7 @@ resource "google_compute_firewall" "https-egress" {
   }
 
   direction = "EGRESS"
-  name      = "vpc-http-ingress"
+  name      = "vpc-https-egress"
   network   = google_compute_network.vpc.id
   priority  = 1000
   source_ranges = [
