@@ -15,6 +15,12 @@ resource "google_project_iam_member" "gcr_access" {
   member  = "serviceAccount:${google_service_account.vm_sa.email}"
 }
 
+resource "google_project_iam_member" "artifact_registry_access" {
+  project = var.project_id
+  role    = "roles/artifactregistry.reader"
+  member  = "serviceAccount:${google_service_account.vm_sa.email}"
+}
+
 data "template_file" "nginx_startup_script" {
   template = file("${path.module}/scripts/start-container.sh.tmpl")
   vars = {
