@@ -4,14 +4,8 @@
 CONTAINER_NAME="${container_name}"
 IMAGE="${image}"
 
-mkdir -p /home/core/.docker
-cat <<EOF > /home/core/.docker/config.json
-{
-  "credHelpers": {
-    "us-docker.pkg.dev": "gcr"
-  }
-}
-EOF
+# Configure docker with credentials for gcr.io and pkg.dev
+docker-credential-gcr configure-docker
 
 # Stop and remove the container if it exists
 docker stop $CONTAINER_NAME || true
