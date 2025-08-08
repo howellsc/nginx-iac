@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "6.13.0"
+    }
+  }
+}
 locals {
   nginx_image = "gcr.io/${var.project_id}/nginx-static-site:v1"
 }
@@ -15,10 +23,11 @@ resource "google_project_iam_member" "gcr_access" {
   member  = "serviceAccount:${google_service_account.vm_sa.email}"
 }
 
-resource "google_project_iam_member" "artifact_registry_access" {
-  project = var.project_id
-  role    = "roles/artifactregistry.reader"
-  member  = "serviceAccount:${google_service_account.vm_sa.email}"
+resource "google_artifact_registry_repository_iam_member" "artifact_registry_access" {
+  member     = "serviceAccount:${google_service_account.vm_sa.email}"
+  location   = "us"
+  repository = "gcr.io/${var.project_id}"
+  role       = "roles/artifactregistry.reader"
 }
 
 data "template_file" "nginx_startup_script" {
