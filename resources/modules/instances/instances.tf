@@ -1,3 +1,10 @@
+data "template_file" "nginx_startup_script" {
+  template = file("${path.module}/scripts/startup.sh.tmpl")
+  vars = {
+    custom_message = var.custom_message
+  }
+}
+
 resource "google_compute_instance" "nginx" {
   name = "nginx-container-vm"
   machine_type = "e2-micro"
@@ -15,6 +22,6 @@ resource "google_compute_instance" "nginx" {
   }
 
   metadata = {
-    startup-script = file("./startup-scripts/startup_script.sh")
+    startup-script = data.template_file.nginx_startup_script.rendered
   }
 }
