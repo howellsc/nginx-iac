@@ -6,6 +6,7 @@ IMAGE="${image}"
 
 # Set home directory to save docker credentials
 HOME=/home/appuser
+mkdir -p $HOME
 
 # Configure docker with credentials for gcr.io and pkg.dev
 docker-credential-gcr configure-docker
