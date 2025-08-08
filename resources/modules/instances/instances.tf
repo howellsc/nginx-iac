@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "6.13.0"
-    }
-  }
-}
 locals {
   nginx_image = "gcr.io/${var.project_id}/nginx-static-site:v1"
 }
