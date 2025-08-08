@@ -28,6 +28,8 @@ resource "google_compute_instance" "nginx" {
   machine_type = "e2-micro"
   zone         = var.zone
 
+  allow_stopping_for_update = true
+
   boot_disk {
     initialize_params {
       image = "cos-cloud/cos-stable"
