@@ -11,16 +11,16 @@ resource "google_service_account" "vm_sa" {
 # Give it access to GCR (Google Container Registry)
 resource "google_project_iam_member" "gcr_access" {
   project = var.project_id
-  role    = "roles/storage.objectViewer"
+  role    = "roles/artifactregistry.reader"
   member  = "serviceAccount:${google_service_account.vm_sa.email}"
 }
 
-resource "google_artifact_registry_repository_iam_binding" "artifact_registry_access" {
-  members = ["serviceAccount:${google_service_account.vm_sa.email}"]
-  location   = "us"
-  repository = "gcr.io"
-  role       = "roles/artifactregistry.reader"
-}
+# resource "google_artifact_registry_repository_iam_binding" "artifact_registry_access" {
+#   members = ["serviceAccount:${google_service_account.vm_sa.email}"]
+#   location   = "us"
+#   repository = "gcr.io"
+#   role       = "roles/artifactregistry.reader"
+# }
 
 data "template_file" "nginx_startup_script" {
   template = file("${path.module}/scripts/start-container.sh.tmpl")
