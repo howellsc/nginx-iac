@@ -15,3 +15,9 @@ variable "zone" {
   type        = string
   default     = "europe-west2-a"
 }
+
+variable "name" {
+  description = "The unique name for the resource set"
+  type        = string
+  default     = ""
+}
