@@ -1,10 +1,10 @@
 resource "google_compute_network" "vpc" {
-  name                    = "nginx-network"
+  name                    = "${var.name}-nginx-network"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "subnet_nginx" {
-  name          = "subnet-nginx"
+  name          = "${var.name}-subnet-nginx"
   region        = var.region
   ip_cidr_range = "10.132.0.0/20"
 

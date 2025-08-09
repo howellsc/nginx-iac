@@ -17,7 +17,7 @@ terraform {
 }
 
 resource "google_storage_bucket" "external_state" {
-  name                        = "${var.project_id}-terraform-state"
+  name                        = "${var.project_id}-${var.name}-terraform-state"
   location                    = local.state_bucket_region
   uniform_bucket_level_access = true
 }
@@ -30,9 +30,11 @@ module "gce_instances" {
   zone            = var.zone
   vpc_name        = module.vpc_network.vpc_name
   vpc_subnet_name = module.vpc_network.vpc_subnet_name
+  name            = var.name
 }
 
 module "vpc_network" {
   source = "./modules/vpc"
   region = var.region
+  name   = var.name
 }

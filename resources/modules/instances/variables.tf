@@ -3,6 +3,11 @@ variable "project_id" {
   type        = string
 }
 
+variable "name" {
+  description = "The unique name for the resource set"
+  type        = string
+}
+
 variable "vpc_name" {
   description = "VPC Name"
   type        = string
