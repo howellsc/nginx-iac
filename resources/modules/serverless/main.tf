@@ -1,7 +1,3 @@
-locals {
-  nginx_image = "gcr.io/${var.project_id}/nginx-static-site:v1"
-}
-
 resource "google_service_account" "cloud_run_sa" {
   account_id   = "${var.name}-cloud-run-service-account"
   display_name = "${var.name} Cloud Run Service Account"
@@ -24,7 +20,7 @@ resource "google_cloud_run_v2_service" "nginx_serverless" {
     service_account = google_service_account.cloud_run_sa.email
 
     containers {
-      image = local.nginx_image
+      image = var.nginx_image_url
 
       ports {
         container_port = 80

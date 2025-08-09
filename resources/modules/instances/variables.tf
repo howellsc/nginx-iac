@@ -33,3 +33,8 @@ variable "nginx_healthcheck_id" {
   description = "The Nginx health check Id"
   type        = string
 }
+
+variable "nginx_image_url" {
+  description = "The Nginx Image URL"
+  type        = string
+}

@@ -1,5 +1,6 @@
 locals {
   state_bucket_region = var.region
+  nginx_image_url     = "gcr.io/${var.project_id}/nginx-static-site:v1"
 }
 
 provider "google" {
@@ -32,6 +33,7 @@ module "gce_instances" {
   vpc_subnet_name      = module.vpc_network.vpc_subnet_name
   nginx_healthcheck_id = module.lb.nginx_healthcheck_id
   name                 = var.name
+  nginx_image_url      = local.nginx_image_url
 }
 
 module "vpc_network" {
@@ -41,10 +43,11 @@ module "vpc_network" {
 }
 
 module "serverless" {
-  source     = "./modules/serverless"
-  project_id = var.project_id
-  name       = var.name
-  region     = var.region
+  source          = "./modules/serverless"
+  project_id      = var.project_id
+  name            = var.name
+  region          = var.region
+  nginx_image_url = local.nginx_image_url
 }
 
 module "lb" {

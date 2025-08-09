@@ -1,5 +1,4 @@
 locals {
-  nginx_image     = "gcr.io/${var.project_id}/nginx-static-site:v1"
   nginx_instances = 1
 }
 
@@ -26,7 +25,7 @@ data "template_file" "nginx_startup_script" {
   template = file("${path.module}/scripts/start-container.sh.tmpl")
   vars = {
     container_name = "nginx"
-    image          = local.nginx_image
+    image          = var.nginx_image_url
   }
 }
 

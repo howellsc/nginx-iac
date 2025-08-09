@@ -12,3 +12,8 @@ variable "region" {
   description = "The region where resources will be created"
   type        = string
 }
+
+variable "nginx_image_url" {
+  description = "The Nginx Image URL"
+  type        = string
+}
