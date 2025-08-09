@@ -18,7 +18,7 @@ resource "google_project_iam_member" "artifact_registry_access" {
 resource "google_cloud_run_v2_service" "nginx_serverless" {
   name     = "${var.name}-nginx-serverless"
   location = var.region
-  ingress  = "INTERNAL_ONLY"
+  ingress  = "INGRESS_TRAFFIC_INTERNAL_ONLY"
 
   template {
     service_account = google_service_account.cloud_run_sa.email
@@ -33,7 +33,15 @@ resource "google_cloud_run_v2_service" "nginx_serverless" {
   }
 
   traffic {
-    percent         = 100
-    latest_revision = true
+    percent = 100
+  }
+}
+
+resource "google_compute_region_network_endpoint_group" "nginx_cloudrun_neg" {
+  name                  = "${var.name}-nginx-cloudrun-neg"
+  region                = var.region
+  network_endpoint_type = "SERVERLESS"
+  cloud_run {
+    service = google_cloud_run_v2_service.nginx_serverless.name
   }
 }

@@ -81,7 +81,7 @@ resource "google_compute_instance_group_manager" "nginx_mig" {
   }
 
   auto_healing_policies {
-    health_check      = google_compute_health_check.nginx_http_health_check.self_link
+    health_check      = var.nginx_healthcheck_id
     initial_delay_sec = 60
   }
 
@@ -90,17 +90,4 @@ resource "google_compute_instance_group_manager" "nginx_mig" {
   }
 
   depends_on = [google_compute_instance_template.nginx_template]
-}
-
-resource "google_compute_health_check" "nginx_http_health_check" {
-  name                = "${var.name}-nginx-http-health-check"
-  check_interval_sec  = 5
-  timeout_sec         = 5
-  healthy_threshold   = 2
-  unhealthy_threshold = 3
-
-  http_health_check {
-    request_path = "/"
-    port_name    = "http"
-  }
 }

@@ -25,16 +25,33 @@ resource "google_storage_bucket" "external_state" {
 module "gce_instances" {
   source = "./modules/instances"
 
-  project_id      = var.project_id
-  region          = var.region
-  zone            = var.zone
-  vpc_name        = module.vpc_network.vpc_name
-  vpc_subnet_name = module.vpc_network.vpc_subnet_name
-  name            = var.name
+  project_id           = var.project_id
+  region               = var.region
+  zone                 = var.zone
+  vpc_name             = module.vpc_network.vpc_name
+  vpc_subnet_name      = module.vpc_network.vpc_subnet_name
+  nginx_healthcheck_id = module.lb.nginx_healthcheck_id
+  name                 = var.name
 }
 
 module "vpc_network" {
   source = "./modules/vpc"
   region = var.region
   name   = var.name
+}
+
+module "serverless" {
+  source     = "./modules/serverless"
+  project_id = var.project_id
+  name       = var.name
+  region     = var.region
+}
+
+module "lb" {
+  source               = "./modules/lb"
+  name                 = var.name
+  vpc_name             = module.vpc_network.vpc_name
+  region               = var.region
+  nginx_backend_mig_id = module.gce_instances.nginx_mig_id
+  nginx_backend_neg_id = module.serverless.nginx_neg_id
 }
