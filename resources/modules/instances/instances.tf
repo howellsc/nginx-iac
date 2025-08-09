@@ -69,7 +69,7 @@ resource "google_compute_instance_group_manager" "nginx_mig" {
   name = "${var.name}-nginx-mig"
 
   zone               = var.zone
-  base_instance_name = "nginx"
+  base_instance_name = "${var.name}-nginx"
   version {
     instance_template = google_compute_instance_template.nginx_template.id
   }
