@@ -47,7 +47,7 @@ resource "google_compute_backend_service" "nginx_internal_backend" {
   protocol              = "HTTP"
   port_name             = "http"
   load_balancing_scheme = "INTERNAL_MANAGED"
-  health_checks = [google_compute_health_check.nginx_http_health_check.self_link]
+  //health_checks = [google_compute_health_check.nginx_http_health_check.self_link]
 
   backend {
     group = var.nginx_backend_mig_id
