@@ -59,7 +59,7 @@ resource "google_compute_region_health_check" "nginx_http_health_check" {
 
   http_health_check {
     request_path = "/"
-    port         = 80
+    port_name    = "http"
   }
 }
 
@@ -73,7 +73,9 @@ resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
   health_checks = [google_compute_region_health_check.nginx_http_health_check.self_link]
 
   backend {
-    group = var.nginx_backend_mig_id
+    balancing_mode  = "UTILIZATION"
+    capacity_scaler = 1
+    group           = var.nginx_backend_mig_id
   }
 }
 
