@@ -45,6 +45,7 @@ module "vpc_network" {
 module "serverless" {
   source          = "./modules/serverless"
   project_id      = var.project_id
+  project_number  = var.project_number
   name            = var.name
   region          = var.region
   nginx_image_url = local.nginx_image_url
