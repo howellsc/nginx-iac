@@ -5,7 +5,7 @@ resource "google_service_account" "cloud_run_sa" {
 
 resource "google_cloud_run_service_iam_member" "allow_lb" {
   location = var.region
-  service  = google_cloud_run_v2_service.nginx_serverless
+  service  = google_cloud_run_v2_service.nginx_serverless.name
   role     = "roles/run.invoker"
   member   = "serviceAccount:service-${var.project_id}@gcp-sa-networking.iam.gserviceaccount.com"
 }
