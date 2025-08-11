@@ -1,5 +1,5 @@
 resource "google_service_account" "cloud_run_sa" {
-  account_id   = "${var.name}-cloud-run-service-account"
+  account_id   = "${var.name}-cloud-run-sa"
   display_name = "${var.name} Cloud Run Service Account"
 }
 
