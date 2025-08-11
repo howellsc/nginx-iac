@@ -41,15 +41,15 @@ resource "google_compute_region_url_map" "nginx_url_map" {
       service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
     }
 
-    path_rule {
-      paths = ["/mig/*"]
-      service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
-    }
-
-    path_rule {
-      paths = ["/neg/*"]
-      service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
-    }
+    # path_rule {
+    #   paths = ["/mig/*"]
+    #   service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
+    # }
+    #
+    # path_rule {
+    #   paths = ["/neg/*"]
+    #   service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
+    # }
   }
 
 }
