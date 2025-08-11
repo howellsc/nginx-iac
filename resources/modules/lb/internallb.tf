@@ -3,7 +3,6 @@ resource "google_compute_subnetwork" "nginx_proxy_only" {
   ip_cidr_range = "10.129.0.0/23"  # must be in your VPC range
   region  = var.region
   network = var.vpc_name
-  purpose = "REGIONAL_MANAGED_PROXY"
   role    = "ACTIVE"
 }
 
