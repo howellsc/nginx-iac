@@ -4,6 +4,7 @@ resource "google_compute_subnetwork" "nginx_proxy_only" {
   region  = var.region
   network = var.vpc_name
   role    = "ACTIVE"
+  purpose = "PRIVATE"
 }
 
 resource "google_compute_region_url_map" "nginx_url_map" {
