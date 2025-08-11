@@ -3,8 +3,8 @@ resource "google_compute_subnetwork" "nginx_proxy_only" {
   ip_cidr_range = "10.129.0.0/23"  # must be in your VPC range
   region  = var.region
   network = var.vpc_name
+  purpose = "REGIONAL_MANAGED_PROXY"
   role    = "ACTIVE"
-  purpose = "PRIVATE"
 }
 
 resource "google_compute_region_url_map" "nginx_url_map" {
@@ -46,7 +46,7 @@ resource "google_compute_forwarding_rule" "nginx_forwarding_rule" {
   port_range            = "80"
   target                = google_compute_region_target_http_proxy.nginx_http_proxy.self_link
   network               = var.vpc_name
-  subnetwork            = google_compute_subnetwork.nginx_proxy_only.self_link
+  subnetwork            = var.vpc_subnet_name
   ip_protocol           = "TCP"
   region                = var.region
 }

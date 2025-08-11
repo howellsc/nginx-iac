@@ -23,3 +23,8 @@ variable "nginx_backend_neg_id" {
   description = "The Nginx backend NEG Id"
   type        = string
 }
+
+variable "vpc_subnet_name" {
+  description = "VPC subnet name"
+  type        = string
+}

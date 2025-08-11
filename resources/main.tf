@@ -54,6 +54,7 @@ module "lb" {
   source               = "./modules/lb"
   name                 = var.name
   vpc_name             = module.vpc_network.vpc_name
+  vpc_subnet_name      = module.vpc_network.vpc_subnet_name
   region               = var.region
   nginx_backend_mig_id = module.gce_instances.nginx_mig_id
   nginx_backend_neg_id = module.serverless.nginx_neg_id
