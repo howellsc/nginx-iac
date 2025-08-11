@@ -14,7 +14,7 @@ resource "google_project_iam_member" "artifact_registry_access" {
 resource "google_cloud_run_v2_service" "nginx_serverless" {
   name                = "${var.name}-nginx-serverless"
   location            = var.region
-  ingress             = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+  ingress             = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
   deletion_protection = false
 
   template {
