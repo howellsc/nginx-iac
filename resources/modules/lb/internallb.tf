@@ -21,21 +21,33 @@ resource "google_compute_region_url_map" "nginx_url_map" {
     name            = "all-paths"
     default_service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
 
+    route_rules {
+      priority = 0
+      match_rules {
+        query_parameter_matches {
+          name = "gce=true"
+        }
+      }
+      service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
+    }
+
+    route_rules {
+      priority = 0
+      match_rules {
+        query_parameter_matches {
+          name = "serverless=true"
+        }
+      }
+      service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
+    }
+
     path_rule {
       paths = ["/mig/*"]
-      url_redirect {
-        strip_query = false
-        path_redirect = "/"
-      }
       service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
     }
 
     path_rule {
       paths = ["/neg/*"]
-      url_redirect {
-        strip_query = false
-        path_redirect = "/"
-      }
       service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
     }
   }
