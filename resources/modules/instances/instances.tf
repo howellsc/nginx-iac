@@ -64,10 +64,10 @@ resource "google_compute_instance_template" "nginx_template" {
   }
 }
 
-resource "google_compute_instance_group_manager" "nginx_mig" {
+resource "google_compute_region_instance_group_manager" "nginx_mig" {
   name = "${var.name}-nginx-mig"
 
-  zone               = var.zone
+  region             = var.region
   base_instance_name = "${var.name}-nginx"
   version {
     instance_template = google_compute_instance_template.nginx_template.id

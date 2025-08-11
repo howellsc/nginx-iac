@@ -22,11 +22,11 @@ resource "google_compute_region_url_map" "nginx_url_map" {
 
   host_rule {
     hosts = ["*"]
-    path_matcher = "path-matcher-1"
+    path_matcher = "all-paths"
   }
 
   path_matcher {
-    name            = "path-matcher-1"
+    name            = "all-paths"
     default_service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
 
     path_rule {
