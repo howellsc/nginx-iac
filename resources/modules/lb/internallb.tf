@@ -49,6 +49,10 @@ resource "google_compute_forwarding_rule" "nginx_forwarding_rule" {
   subnetwork            = var.vpc_subnet_name
   ip_protocol           = "TCP"
   region                = var.region
+
+  depends_on = [
+    google_compute_subnetwork.nginx_proxy_only
+  ]
 }
 
 resource "google_compute_region_health_check" "nginx_http_health_check" {
