@@ -1,3 +1,3 @@
 output "nginx_mig_id" {
-  value = google_compute_instance_group_manager.nginx_mig.self_link
+  value = google_compute_instance_group_manager.nginx_mig.instance_group
 }
