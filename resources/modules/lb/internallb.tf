@@ -21,35 +21,25 @@ resource "google_compute_region_url_map" "nginx_url_map" {
     name            = "all-paths"
     default_service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
 
-    route_rules {
-      priority = 0
-      match_rules {
-        query_parameter_matches {
-          name = "gce=true"
+    path_rule {
+      paths = ["/mig/*"]
+      route_action {
+        url_rewrite {
+          path_prefix_rewrite = "/"
         }
       }
       service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
     }
 
-    route_rules {
-      priority = 1
-      match_rules {
-        query_parameter_matches {
-          name = "serverless=true"
+    path_rule {
+      paths = ["/neg/*"]
+      route_action {
+        url_rewrite {
+          path_prefix_rewrite = "/"
         }
       }
       service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
     }
-
-    # path_rule {
-    #   paths = ["/mig/*"]
-    #   service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
-    # }
-    #
-    # path_rule {
-    #   paths = ["/neg/*"]
-    #   service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
-    # }
   }
 
 }
