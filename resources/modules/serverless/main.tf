@@ -27,10 +27,6 @@ resource "google_cloud_run_v2_service" "nginx_serverless" {
       }
     }
   }
-
-  traffic {
-    percent = 100
-  }
 }
 
 resource "google_compute_region_network_endpoint_group" "nginx_cloudrun_neg" {
