@@ -7,6 +7,13 @@ resource "google_compute_subnetwork" "nginx_proxy_only" {
   role    = "ACTIVE"
 }
 
+resource "google_iap_web_backend_service_iam_member" "iap_access" {
+  project             = var.project_id
+  web_backend_service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
+  role                = "roles/iap.httpsResourceAccessor"
+  member              = "serviceAccount:${var.cloud_run_sa_email}"
+}
+
 resource "google_compute_region_url_map" "nginx_url_map" {
   name            = "${var.name}-nginx-url-map"
   default_service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
@@ -101,6 +108,7 @@ resource "google_compute_region_backend_service" "nginx_gce_neg_backend" {
   port_name             = "http"
   load_balancing_scheme = "INTERNAL_MANAGED"
   region                = var.region
+
 
   backend {
     group = var.nginx_backend_neg_id

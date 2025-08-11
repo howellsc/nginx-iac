@@ -3,13 +3,6 @@ resource "google_service_account" "cloud_run_sa" {
   display_name = "${var.name} Cloud Run Service Account"
 }
 
-resource "google_cloud_run_service_iam_member" "allow_lb" {
-  location = var.region
-  service  = google_cloud_run_v2_service.nginx_serverless.name
-  role     = "roles/run.invoker"
-  member   = "serviceAccount:service-${var.project_number}@gcp-sa-networking.iam.gserviceaccount.com"
-}
-
 # Allow Cloud Run to pull private images from Artifact Registry
 resource "google_project_iam_member" "artifact_registry_access" {
   role    = "roles/artifactregistry.reader"
@@ -41,6 +34,7 @@ resource "google_compute_region_network_endpoint_group" "nginx_cloudrun_neg" {
   name                  = "${var.name}-nginx-cloudrun-neg"
   region                = var.region
   network_endpoint_type = "SERVERLESS"
+
   cloud_run {
     service = google_cloud_run_v2_service.nginx_serverless.name
   }

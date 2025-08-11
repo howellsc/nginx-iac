@@ -28,3 +28,15 @@ variable "vpc_subnet_name" {
   description = "VPC subnet name"
   type        = string
 }
+
+variable "project_id" {
+  description = "The Google Cloud project ID"
+  type        = string
+}
+
+variable "cloud_run_sa_email" {
+  description = "The Cloud Run Service Account email"
+  type        = string
+}
+
+
