@@ -12,9 +12,10 @@ resource "google_project_iam_member" "artifact_registry_access" {
 
 # Deploy the container to Cloud Run
 resource "google_cloud_run_v2_service" "nginx_serverless" {
-  name     = "${var.name}-nginx-serverless"
-  location = var.region
-  ingress  = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+  name                = "${var.name}-nginx-serverless"
+  location            = var.region
+  ingress             = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+  deletion_protection = false
 
   template {
     service_account = google_service_account.cloud_run_sa.email
