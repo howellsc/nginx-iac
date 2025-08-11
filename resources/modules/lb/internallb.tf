@@ -59,7 +59,7 @@ resource "google_compute_region_health_check" "nginx_http_health_check" {
 
   http_health_check {
     request_path = "/"
-    port_name    = "http"
+    port         = 80
   }
 }
 
