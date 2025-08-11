@@ -11,7 +11,9 @@ resource "google_compute_instance" "nginx_standalone" {
   name         = "${var.name}-nginx-internal"
   machine_type = "e2-micro"
   zone         = var.zone
-  tags = ["${var.name}-allow-https-443-egress"]
+  tags = [
+    "${var.name}-allow-https-443-egress", "${var.name}-allow-tcp-22-ingress"
+  ]
 
   boot_disk {
     initialize_params {
