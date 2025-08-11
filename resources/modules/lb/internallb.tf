@@ -9,7 +9,27 @@ resource "google_compute_subnetwork" "nginx_proxy_only" {
 
 resource "google_compute_url_map" "nginx_url_map" {
   name            = "${var.name}-nginx-url-map"
-  default_service = google_compute_backend_service.nginx_internal_backend.self_link
+  default_service = google_compute_backend_service.nginx_gce_internal_backend.self_link
+
+  host_rule {
+    hosts = ["*"]
+    path_matcher = "path-matcher-1"
+  }
+
+  path_matcher {
+    name            = "path-matcher-1"
+    default_service = google_compute_backend_service.nginx_gce_internal_backend.self_link
+
+    path_rule {
+      paths = ["/mig/*"]
+      service = google_compute_backend_service.nginx_gce_internal_backend.self_link
+    }
+
+    path_rule {
+      paths = ["/neg/*"]
+      service = google_compute_backend_service.nginx_gce_serverless_backend.self_link
+    }
+  }
 
 }
 
@@ -42,16 +62,23 @@ resource "google_compute_health_check" "nginx_http_health_check" {
   }
 }
 
-resource "google_compute_backend_service" "nginx_internal_backend" {
+resource "google_compute_backend_service" "nginx_gce_internal_backend" {
   name                  = "${var.name}-internal-backend"
   protocol              = "HTTP"
   port_name             = "http"
   load_balancing_scheme = "INTERNAL_MANAGED"
-  //health_checks = [google_compute_health_check.nginx_http_health_check.self_link]
+  health_checks = [google_compute_health_check.nginx_http_health_check.self_link]
 
   backend {
     group = var.nginx_backend_mig_id
   }
+}
+
+resource "google_compute_backend_service" "nginx_gce_serverless_backend" {
+  name                  = "${var.name}-internal-backend"
+  protocol              = "HTTP"
+  port_name             = "http"
+  load_balancing_scheme = "INTERNAL_MANAGED"
 
   backend {
     group = var.nginx_backend_neg_id
