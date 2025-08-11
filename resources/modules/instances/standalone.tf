@@ -22,9 +22,6 @@ resource "google_compute_instance" "nginx_standalone" {
   network_interface {
     subnetwork = var.vpc_subnet_name
     network_ip = google_compute_address.internal_ip_nginx_standalone.address
-    access_config {
-      nat_ip = null
-    }
   }
 
   metadata_startup_script = <<-EOT
