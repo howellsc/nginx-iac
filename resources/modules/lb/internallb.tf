@@ -49,12 +49,13 @@ resource "google_compute_forwarding_rule" "nginx_forwarding_rule" {
   region                = var.region
 }
 
-resource "google_compute_health_check" "nginx_http_health_check" {
+resource "google_compute_region_health_check" "nginx_http_health_check" {
   name                = "${var.name}-nginx-http-health-check"
   check_interval_sec  = 30
   timeout_sec         = 5
   healthy_threshold   = 2
   unhealthy_threshold = 3
+  region              = var.region
 
   http_health_check {
     request_path = "/"
@@ -69,7 +70,7 @@ resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
   load_balancing_scheme = "INTERNAL_MANAGED"
   region                = var.region
 
-  health_checks = [google_compute_health_check.nginx_http_health_check.self_link]
+  health_checks = [google_compute_region_health_check.nginx_http_health_check.self_link]
 
   backend {
     group = var.nginx_backend_mig_id
