@@ -32,7 +32,7 @@ resource "google_compute_region_url_map" "nginx_url_map" {
     }
 
     route_rules {
-      priority = 0
+      priority = 1
       match_rules {
         query_parameter_matches {
           name = "serverless=true"
