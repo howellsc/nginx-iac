@@ -3,6 +3,13 @@ resource "google_service_account" "cloud_run_sa" {
   display_name = "${var.name} Cloud Run Service Account"
 }
 
+resource "google_cloud_run_service_iam_member" "allow_lb" {
+  location = var.region
+  service  = google_cloud_run_v2_service.nginx_serverless
+  role     = "roles/run.invoker"
+  member   = "serviceAccount:service-${var.project_id}@gcp-sa-networking.iam.gserviceaccount.com"
+}
+
 # Allow Cloud Run to pull private images from Artifact Registry
 resource "google_project_iam_member" "artifact_registry_access" {
   role    = "roles/artifactregistry.reader"
