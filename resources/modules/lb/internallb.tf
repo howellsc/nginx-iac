@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "6.13.0"
+    }
+  }
+}
 resource "google_compute_subnetwork" "nginx_proxy_only" {
   name    = "${var.name}-inginx-proxy-subnet"
   ip_cidr_range = "10.129.0.0/23"  # must be in your VPC range
@@ -7,9 +15,10 @@ resource "google_compute_subnetwork" "nginx_proxy_only" {
   role    = "ACTIVE"
 }
 
-resource "google_compute_url_map" "nginx_url_map" {
+resource "google_compute_region_url_map" "nginx_url_map" {
   name            = "${var.name}-nginx-url-map"
   default_service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
+  region          = var.region
 
   host_rule {
     hosts = ["*"]
@@ -33,16 +42,17 @@ resource "google_compute_url_map" "nginx_url_map" {
 
 }
 
-resource "google_compute_target_http_proxy" "nginx_http_proxy" {
+resource "google_compute_region_target_http_proxy" "nginx_http_proxy" {
   name    = "${var.name}-nginx-http-proxy"
-  url_map = google_compute_url_map.nginx_url_map.self_link
+  url_map = google_compute_region_url_map.nginx_url_map.self_link
+  region  = var.region
 }
 
 resource "google_compute_forwarding_rule" "nginx_forwarding_rule" {
   name                  = "${var.name}-nginx-http-forwarding-rule"
   load_balancing_scheme = "INTERNAL_MANAGED"
   port_range            = "80"
-  target                = google_compute_target_http_proxy.nginx_http_proxy.self_link
+  target                = google_compute_region_target_http_proxy.nginx_http_proxy.self_link
   network               = var.vpc_name
   subnetwork            = google_compute_subnetwork.nginx_proxy_only.self_link
   ip_protocol           = "TCP"
