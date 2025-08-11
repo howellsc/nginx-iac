@@ -81,7 +81,7 @@ resource "google_compute_instance_group_manager" "nginx_mig" {
 
   auto_healing_policies {
     health_check      = var.nginx_healthcheck_id
-    initial_delay_sec = 60
+    initial_delay_sec = 120
   }
 
   lifecycle {

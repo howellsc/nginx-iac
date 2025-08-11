@@ -51,7 +51,7 @@ resource "google_compute_forwarding_rule" "nginx_forwarding_rule" {
 
 resource "google_compute_health_check" "nginx_http_health_check" {
   name                = "${var.name}-nginx-http-health-check"
-  check_interval_sec  = 5
+  check_interval_sec  = 30
   timeout_sec         = 5
   healthy_threshold   = 2
   unhealthy_threshold = 3
@@ -77,7 +77,7 @@ resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
 }
 
 resource "google_compute_region_backend_service" "nginx_gce_neg_backend" {
-  name                  = "${var.name}-internal-neg-backend"
+  name                  = "${var.name}-neg-backend"
   protocol              = "HTTP"
   port_name             = "http"
   load_balancing_scheme = "INTERNAL_MANAGED"
