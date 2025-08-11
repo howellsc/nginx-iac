@@ -1,7 +1,7 @@
 # Reserve an internal IP
 resource "google_compute_address" "internal_ip_nginx_standalone" {
   name         = "${var.name}-nginx-internal-ip"
-  subnetwork   = var.vpc_name
+  subnetwork   = var.vpc_subnet_name
   address_type = "INTERNAL"
   region       = var.region
 }
