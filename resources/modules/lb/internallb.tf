@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "6.13.0"
-    }
-  }
-}
 resource "google_compute_subnetwork" "nginx_proxy_only" {
   name    = "${var.name}-inginx-proxy-subnet"
   ip_cidr_range = "10.129.0.0/23"  # must be in your VPC range
