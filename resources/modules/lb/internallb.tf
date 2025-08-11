@@ -9,7 +9,7 @@ resource "google_compute_subnetwork" "nginx_proxy_only" {
 
 resource "google_compute_url_map" "nginx_url_map" {
   name            = "${var.name}-nginx-url-map"
-  default_service = google_compute_backend_service.nginx_gce_internal_backend.self_link
+  default_service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
 
   host_rule {
     hosts = ["*"]
@@ -18,16 +18,16 @@ resource "google_compute_url_map" "nginx_url_map" {
 
   path_matcher {
     name            = "path-matcher-1"
-    default_service = google_compute_backend_service.nginx_gce_internal_backend.self_link
+    default_service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
 
     path_rule {
       paths = ["/mig/*"]
-      service = google_compute_backend_service.nginx_gce_internal_backend.self_link
+      service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
     }
 
     path_rule {
       paths = ["/neg/*"]
-      service = google_compute_backend_service.nginx_gce_serverless_backend.self_link
+      service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
     }
   }
 
@@ -62,11 +62,13 @@ resource "google_compute_health_check" "nginx_http_health_check" {
   }
 }
 
-resource "google_compute_backend_service" "nginx_gce_internal_backend" {
-  name                  = "${var.name}-internal-backend"
+resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
+  name                  = "${var.name}-mig-backend"
   protocol              = "HTTP"
   port_name             = "http"
   load_balancing_scheme = "INTERNAL_MANAGED"
+  region                = var.region
+
   health_checks = [google_compute_health_check.nginx_http_health_check.self_link]
 
   backend {
@@ -74,11 +76,12 @@ resource "google_compute_backend_service" "nginx_gce_internal_backend" {
   }
 }
 
-resource "google_compute_backend_service" "nginx_gce_serverless_backend" {
-  name                  = "${var.name}-internal-backend"
+resource "google_compute_region_backend_service" "nginx_gce_neg_backend" {
+  name                  = "${var.name}-internal-neg-backend"
   protocol              = "HTTP"
   port_name             = "http"
   load_balancing_scheme = "INTERNAL_MANAGED"
+  region                = var.region
 
   backend {
     group = var.nginx_backend_neg_id
