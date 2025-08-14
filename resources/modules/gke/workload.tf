@@ -20,7 +20,7 @@ resource "kubernetes_namespace" "nginx_namespace" {
 resource "kubernetes_deployment_v1" "nginx_deployment" {
   metadata {
     name      = "app-nginx"
-    namespace = kubernetes_namespace.nginx_namespace.metadata.name
+    namespace = kubernetes_namespace.nginx_namespace.metadata[0].name
   }
 
   spec {
@@ -91,7 +91,7 @@ resource "kubernetes_deployment_v1" "nginx_deployment" {
 resource "kubernetes_service_v1" "nginx_service" {
   metadata {
     name      = "nginx-app-lb"
-    namespace = kubernetes_namespace.nginx_namespace.metadata.name
+    namespace = kubernetes_namespace.nginx_namespace.metadata[0].name
     annotations = {
       "networking.gke.io/load-balancer-type" = "Internal" # Remove to create an external loadbalancer
     }
