@@ -1,8 +1,10 @@
 resource "google_container_cluster" "default" {
   name = "${var.name}-autopilot-cluster"
 
-  location                 = "us-central1"
-  enable_autopilot         = true
+  location = "us-central1"
+
+  remove_default_node_pool = true
+  initial_node_count       = 1
   enable_l4_ilb_subsetting = true
 
   network    = var.vpc_name
