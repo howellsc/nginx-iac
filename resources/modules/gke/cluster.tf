@@ -19,4 +19,14 @@ resource "google_container_cluster" "default" {
   # Set `deletion_protection` to `true` will ensure that one cannot
   # accidentally delete this instance by use of Terraform.
   deletion_protection = false
+
+  node_config {
+    machine_type = "e2-medium"
+
+    access_config = [] # prevent assigning public IPs
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
 }
