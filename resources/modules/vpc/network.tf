@@ -24,8 +24,7 @@ resource "google_compute_subnetwork" "subnet_gke" {
   ip_cidr_range = "10.0.0.0/16"
   region        = "us-central1"
 
-  stack_type       = "IPV4_IPV6"
-  ipv6_access_type = "INTERNAL" # Change to "EXTERNAL" if creating an external loadbalancer
+  //  ipv6_access_type = "INTERNAL" # Change to "EXTERNAL" if creating an external loadbalancer
 
   network = google_compute_network.vpc.id
   secondary_ip_range {
