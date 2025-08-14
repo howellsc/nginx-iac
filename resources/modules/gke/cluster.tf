@@ -9,7 +9,7 @@ resource "google_container_cluster" "default" {
   subnetwork = var.vpc_subnet_gke_name
 
   ip_allocation_policy {
-    stack_type                    = "IPV4_IPV6"
+    stack_type                    = "IPV4_ONLY"
     services_secondary_range_name = var.vpc_subnet_gke_secondary_ip_range[0].range_name
     cluster_secondary_range_name  = var.vpc_subnet_gke_secondary_ip_range[1].range_name
   }
