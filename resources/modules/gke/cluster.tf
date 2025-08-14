@@ -10,6 +10,10 @@ resource "google_container_cluster" "default" {
   network    = var.vpc_name
   subnetwork = var.vpc_subnet_gke_name
 
+  private_cluster_config {
+    enable_private_nodes = true
+  }
+
   ip_allocation_policy {
     stack_type                    = "IPV4"
     services_secondary_range_name = var.vpc_subnet_gke_secondary_ip_range[0].range_name
@@ -19,14 +23,4 @@ resource "google_container_cluster" "default" {
   # Set `deletion_protection` to `true` will ensure that one cannot
   # accidentally delete this instance by use of Terraform.
   deletion_protection = false
-
-  node_config {
-    machine_type = "e2-medium"
-
-    access_config = [] # prevent assigning public IPs
-
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
-  }
 }
