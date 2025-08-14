@@ -11,33 +11,40 @@ provider "kubernetes" {
   ]
 }
 
+resource "kubernetes_namespace" "nginx_namespace" {
+  metadata {
+    name = "${var.name}-namespace"
+  }
+}
+
 resource "kubernetes_deployment_v1" "nginx_deployment" {
   metadata {
-    name = "${var.name}-nginx"
+    name      = "app-nginx"
+    namespace = kubernetes_namespace.nginx_namespace.metadata.name
   }
 
   spec {
     selector {
       match_labels = {
-        app = "${var.name}-nginx-app"
+        app = "app-nginx"
       }
     }
 
     template {
       metadata {
         labels = {
-          app = "${var.name}-nginx-app"
+          app = "app-nginx"
         }
       }
 
       spec {
         container {
           image = var.nginx_image_url
-          name  = "${var.name}-nginx-container"
+          name  = "app-nginx"
 
           port {
             container_port = 8080
-            name           = "${var.name}-nginx-app-svc"
+            name           = "nginx-svc"
           }
 
           security_context {
@@ -54,7 +61,7 @@ resource "kubernetes_deployment_v1" "nginx_deployment" {
           liveness_probe {
             http_get {
               path = "/"
-              port = "hello-app-svc"
+              port = "nginx-svc"
             }
 
             initial_delay_seconds = 3
@@ -83,7 +90,8 @@ resource "kubernetes_deployment_v1" "nginx_deployment" {
 
 resource "kubernetes_service_v1" "nginx_service" {
   metadata {
-    name = "${var.name}-nginx-app-loadbalancer"
+    name      = "nginx-app-lb"
+    namespace = kubernetes_namespace.nginx_namespace.metadata.name
     annotations = {
       "networking.gke.io/load-balancer-type" = "Internal" # Remove to create an external loadbalancer
     }
