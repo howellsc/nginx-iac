@@ -1,9 +1,8 @@
 resource "google_container_cluster" "default" {
-  name = "${var.name}-autopilot-cluster"
+  name = "${var.name}-cluster"
 
   location = var.region
 
-  remove_default_node_pool = true
   initial_node_count       = 1
   enable_l4_ilb_subsetting = true
 
