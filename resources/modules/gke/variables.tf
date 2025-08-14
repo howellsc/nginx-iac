@@ -25,3 +25,8 @@ variable "vpc_subnet_gke_secondary_ip_range" {
     ip_cidr_range = string
   }))
 }
+
+variable "region" {
+  description = "The region where resources will be created"
+  type        = string
+}

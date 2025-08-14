@@ -22,7 +22,7 @@ resource "google_compute_subnetwork" "subnet_gke" {
   name = "${var.name}-subnet-gke"
 
   ip_cidr_range = "10.0.0.0/16"
-  region        = "us-central1"
+  region        = var.region
 
   //  ipv6_access_type = "INTERNAL" # Change to "EXTERNAL" if creating an external loadbalancer
 
@@ -34,6 +34,6 @@ resource "google_compute_subnetwork" "subnet_gke" {
 
   secondary_ip_range {
     range_name    = "pod-ranges"
-    ip_cidr_range = "192.168.1.0/24"
+    ip_cidr_range = "192.168.20.0/20"
   }
 }

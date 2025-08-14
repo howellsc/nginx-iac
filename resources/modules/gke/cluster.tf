@@ -1,7 +1,7 @@
 resource "google_container_cluster" "default" {
   name = "${var.name}-autopilot-cluster"
 
-  location = "us-central1"
+  location = var.region
 
   remove_default_node_pool = true
   initial_node_count       = 1
