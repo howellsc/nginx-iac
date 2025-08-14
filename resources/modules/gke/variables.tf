@@ -20,5 +20,8 @@ variable "nginx_image_url" {
 
 variable "vpc_subnet_gke_secondary_ip_range" {
   description = "VPC GKE subnet secondary ip range"
-  type        = list(string)
+  type = list(object({
+    range_name    = string
+    ip_cidr_range = string
+  }))
 }
