@@ -5,3 +5,11 @@ output "vpc_name" {
 output "vpc_subnet_name" {
   value = google_compute_subnetwork.subnet_nginx.id
 }
+
+output "vpc_subnet_gke_name" {
+  value = google_compute_subnetwork.subnet_gke.id
+}
+
+output "vpc_subnet_gke_secondary_ip_range" {
+  value = google_compute_subnetwork.subnet_gke.secondary_ip_range
+}
