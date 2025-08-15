@@ -76,6 +76,33 @@ resource "google_compute_firewall" "https-egress" {
   }
 }
 
+resource "google_compute_firewall" "http-egress" {
+
+  allow {
+    ports = [
+      "80",
+      "8080"
+    ]
+    protocol = "tcp"
+  }
+
+  direction = "EGRESS"
+  name      = "${var.name}-vpc-http-egress"
+  network   = google_compute_network.vpc.id
+  priority  = 1000
+  source_ranges = [
+    "0.0.0.0/0"
+  ]
+  target_tags = [
+    "${var.name}-allow-https-80-8080-egress"
+  ]
+  source_tags = []
+
+  lifecycle {
+    replace_triggered_by = [google_compute_network.vpc]
+  }
+}
+
 resource "google_compute_firewall" "ssh-ingress" {
   allow {
     ports = [
