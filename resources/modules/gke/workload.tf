@@ -43,7 +43,7 @@ resource "kubernetes_deployment_v1" "nginx_deployment" {
           name  = "app-nginx"
 
           port {
-            container_port = 8080
+            container_port = 80
             name           = "nginx-svc"
           }
 
