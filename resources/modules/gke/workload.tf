@@ -51,11 +51,6 @@ resource "kubernetes_deployment_v1" "nginx_deployment" {
             allow_privilege_escalation = false
             privileged                 = false
             read_only_root_filesystem  = false
-
-            capabilities {
-              add  = []
-              drop = ["NET_RAW"]
-            }
           }
 
           liveness_probe {
@@ -69,13 +64,6 @@ resource "kubernetes_deployment_v1" "nginx_deployment" {
           }
         }
 
-        security_context {
-          run_as_non_root = true
-
-          seccomp_profile {
-            type = "RuntimeDefault"
-          }
-        }
 
         toleration {
           effect   = "NoSchedule"
