@@ -1,18 +1,18 @@
 resource "google_compute_subnetwork" "nginx_proxy_only" {
-  name    = "${var.name}-inginx-proxy-subnet"
-  ip_cidr_range = "10.129.0.0/23"  # must be in your VPC range
-  region  = var.region
-  network = var.vpc_name
-  purpose = "REGIONAL_MANAGED_PROXY"
-  role    = "ACTIVE"
+  name          = "${var.name}-inginx-proxy-subnet"
+  ip_cidr_range = "10.129.0.0/23" # must be in your VPC range
+  region        = var.region
+  network       = var.vpc_name
+  purpose       = "REGIONAL_MANAGED_PROXY"
+  role          = "ACTIVE"
 }
 
-resource "google_iap_web_backend_service_iam_member" "iap_access" {
-  project             = var.project_id
-  web_backend_service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
-  role                = "roles/iap.httpsResourceAccessor"
-  member              = "serviceAccount:${var.cloud_run_sa_email}"
-}
+# resource "google_iap_web_backend_service_iam_member" "iap_access" {
+#   project             = var.project_id
+#   web_backend_service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
+#   role                = "roles/iap.httpsResourceAccessor"
+#   member              = "serviceAccount:${var.cloud_run_sa_email}"
+# }
 
 resource "google_compute_region_url_map" "nginx_url_map" {
   name            = "${var.name}-nginx-url-map"
@@ -20,7 +20,7 @@ resource "google_compute_region_url_map" "nginx_url_map" {
   region          = var.region
 
   host_rule {
-    hosts = ["*"]
+    hosts        = ["*"]
     path_matcher = "all-paths"
   }
 
