@@ -8,14 +8,40 @@ resource "google_compute_firewall" "http-ingress" {
   }
 
   direction = "INGRESS"
-  name      = "vpc-http-ingress"
+  name      = "${var.name}-vpc-http-ingress"
   network   = google_compute_network.vpc.id
   priority  = 1000
   source_ranges = [
     "0.0.0.0/0"
   ]
   target_tags = [
-    "allow-http-80-ingress"
+    "${var.name}-allow-http-80-ingress"
+  ]
+  source_tags = []
+
+  lifecycle {
+    replace_triggered_by = [google_compute_network.vpc]
+  }
+}
+
+resource "google_compute_firewall" "https-ingress" {
+
+  allow {
+    ports = [
+      "443"
+    ]
+    protocol = "tcp"
+  }
+
+  direction = "INGRESS"
+  name      = "${var.name}-vpc-https-ingress"
+  network   = google_compute_network.vpc.id
+  priority  = 1000
+  source_ranges = [
+    "0.0.0.0/0"
+  ]
+  target_tags = [
+    "${var.name}-allow-http-443-ingress"
   ]
   source_tags = []
 
@@ -34,14 +60,41 @@ resource "google_compute_firewall" "https-egress" {
   }
 
   direction = "EGRESS"
-  name      = "vpc-https-egress"
+  name      = "${var.name}-vpc-https-egress"
   network   = google_compute_network.vpc.id
   priority  = 1000
   source_ranges = [
     "0.0.0.0/0"
   ]
   target_tags = [
-    "allow-https-443-egress"
+    "${var.name}-allow-https-443-egress"
+  ]
+  source_tags = []
+
+  lifecycle {
+    replace_triggered_by = [google_compute_network.vpc]
+  }
+}
+
+resource "google_compute_firewall" "http-egress" {
+
+  allow {
+    ports = [
+      "80",
+      "8080"
+    ]
+    protocol = "tcp"
+  }
+
+  direction = "EGRESS"
+  name      = "${var.name}-vpc-http-egress"
+  network   = google_compute_network.vpc.id
+  priority  = 1000
+  source_ranges = [
+    "0.0.0.0/0"
+  ]
+  target_tags = [
+    "${var.name}-allow-https-80-8080-egress"
   ]
   source_tags = []
 
@@ -59,14 +112,14 @@ resource "google_compute_firewall" "ssh-ingress" {
   }
 
   direction = "INGRESS"
-  name      = "vpc-ssh-ingress"
+  name      = "${var.name}-vpc-ssh-ingress"
   network   = google_compute_network.vpc.id
   priority  = 1000
   source_ranges = [
     "0.0.0.0/0"
   ]
   target_tags = [
-    "allow-tcp-22-ingress"
+    "${var.name}-allow-tcp-22-ingress"
   ]
   source_tags = []
 
