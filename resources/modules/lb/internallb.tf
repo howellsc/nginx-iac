@@ -30,19 +30,19 @@ resource "google_compute_region_url_map" "nginx_url_map" {
 
     path_rule {
       paths = ["/mig/*"]
-      route_action {
-        url_rewrite {
-        }
-      }
+      # route_action {
+      #   url_rewrite {
+      #   }
+      # }
       service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
     }
 
     path_rule {
       paths = ["/neg/*"]
-      route_action {
-        url_rewrite {
-        }
-      }
+      # route_action {
+      #   url_rewrite {
+      #   }
+      # }
       service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
     }
   }
