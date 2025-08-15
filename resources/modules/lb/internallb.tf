@@ -32,7 +32,6 @@ resource "google_compute_region_url_map" "nginx_url_map" {
       paths = ["/mig/*"]
       route_action {
         url_rewrite {
-          path_prefix_rewrite = ""
         }
       }
       service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
@@ -42,7 +41,6 @@ resource "google_compute_region_url_map" "nginx_url_map" {
       paths = ["/neg/*"]
       route_action {
         url_rewrite {
-          path_prefix_rewrite = ""
         }
       }
       service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
