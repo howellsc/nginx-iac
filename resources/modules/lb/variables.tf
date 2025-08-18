@@ -30,10 +30,3 @@ variable "vpc_subnet_name" {
   description = "VPC subnet name"
   type        = string
 }
-
-variable "project_id" {
-  description = "The Google Cloud project ID"
-  type        = string
-}
-
-
