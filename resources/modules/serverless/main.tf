@@ -15,9 +15,8 @@ resource "google_cloud_run_service_iam_member" "noauth" {
   location = google_cloud_run_v2_service.nginx_serverless.location
   project  = var.project_id
   service  = google_cloud_run_v2_service.nginx_serverless.name
-
-  role   = "roles/run.invoker"
-  member = var.cloud_run_sa_email
+  role     = "roles/run.invoker"
+  member   = "serviceAccount:${var.cloud_run_sa_email}"
 }
 
 # Deploy the container to Cloud Run
