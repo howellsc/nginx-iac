@@ -10,6 +10,16 @@ resource "google_project_iam_member" "artifact_registry_access" {
   project = var.project_id
 }
 
+# Allow unauthenticated access
+resource "google_cloud_run_service_iam_member" "noauth" {
+  location = google_cloud_run_v2_service.nginx_serverless.location
+  project  = var.project_id
+  service  = google_cloud_run_v2_service.nginx_serverless.name
+
+  role   = "roles/run.invoker"
+  member = "allUsers"
+}
+
 # Deploy the container to Cloud Run
 resource "google_cloud_run_v2_service" "nginx_serverless" {
   name                = "${var.name}-nginx-serverless"
