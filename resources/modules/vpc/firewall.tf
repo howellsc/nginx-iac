@@ -41,7 +41,7 @@ resource "google_compute_firewall" "https-ingress" {
     "0.0.0.0/0"
   ]
   target_tags = [
-    "${var.name}-allow-http-443-ingress"
+    "${var.name}-allow-https-443-ingress"
   ]
   source_tags = []
 
