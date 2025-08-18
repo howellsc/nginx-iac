@@ -12,13 +12,12 @@ resource "google_compute_instance" "nginx_standalone" {
   machine_type = "e2-micro"
   zone         = var.zone
   tags = [
-    "${var.name}-allow-https-443-ingress", "${var.name}-allow-tcp-22-ingress"
+    "${var.name}-allow-https-443-ingress", "${var.name}-allow-tcp-22-ingress", "${var.name}-allow-https-443-egress"
   ]
 
   boot_disk {
     initialize_params {
-      image = "projects/debian-cloud/global/images/family/debian-11"
-      //image = "debian-cloud/debian-12"
+      image = "debian-cloud/debian-12"
     }
   }
 
