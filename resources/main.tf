@@ -52,7 +52,6 @@ module "serverless" {
 
 module "lb" {
   source               = "./modules/lb"
-  project_id           = var.project_id
   name                 = var.name
   vpc_name             = module.vpc_network.vpc_name
   vpc_subnet_name      = module.vpc_network.vpc_subnet_name
