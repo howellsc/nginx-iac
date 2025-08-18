@@ -78,7 +78,6 @@ resource "google_compute_region_health_check" "nginx_http_health_check" {
 }
 
 resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
-  count                 = var.nginx_backend_mig_id != "" ? 1 : 0
   name                  = "${var.name}-mig-backend"
   protocol              = "HTTP"
   port_name             = "http"
@@ -95,7 +94,6 @@ resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
 }
 
 resource "google_compute_region_backend_service" "nginx_gce_neg_backend" {
-  count                 = var.nginx_backend_neg_id != "" ? 1 : 0
   name                  = "${var.name}-neg-backend"
   protocol              = "HTTP"
   port_name             = "http"
