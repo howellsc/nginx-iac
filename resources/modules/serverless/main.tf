@@ -10,12 +10,16 @@ resource "google_project_iam_member" "artifact_registry_access" {
   project = var.project_id
 }
 
-resource "google_cloud_run_service_iam_member" "allow_gclb" {
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
+resource "google_cloud_run_v2_service_iam_member" "allow_gclb" {
   location = var.region
   project  = var.project_id
-  service  = google_cloud_run_v2_service.nginx_serverless.name
+  name     = google_cloud_run_v2_service.nginx_serverless.name
   role     = "roles/run.invoker"
-  member   = "serviceAccount:service-${var.project_id}@serverless-robot-prod.iam.gserviceaccount.com"
+  member   = "serviceAccount:service-${data.google_project.project.project_id}@serverless-robot-prod.iam.gserviceaccount.com"
 }
 
 # Deploy the container to Cloud Run
