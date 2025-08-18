@@ -19,7 +19,7 @@ resource "google_cloud_run_v2_service_iam_member" "allow_gclb" {
   project  = var.project_id
   name     = google_cloud_run_v2_service.nginx_serverless.name
   role     = "roles/run.invoker"
-  member   = "serviceAccount:service-${data.google_project.project.project_id}@serverless-robot-prod.iam.gserviceaccount.com"
+  member   = "serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
 }
 
 # Deploy the container to Cloud Run
