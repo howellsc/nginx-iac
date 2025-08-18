@@ -9,7 +9,7 @@ resource "google_compute_subnetwork" "nginx_proxy_only" {
 
 resource "google_compute_region_url_map" "nginx_url_map" {
   name            = "${var.name}-nginx-url-map"
-  default_service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
+  default_service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
   region          = var.region
 
   host_rule {
@@ -19,25 +19,25 @@ resource "google_compute_region_url_map" "nginx_url_map" {
 
   path_matcher {
     name            = "all-paths"
-    default_service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
+    default_service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
 
-    # path_rule {
-    #   paths = ["/mig/*"]
-    #   # route_action {
-    #   #   url_rewrite {
-    #   #   }
-    #   # }
-    #   service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
-    # }
-    #
-    # path_rule {
-    #   paths = ["/neg/*"]
-    #   # route_action {
-    #   #   url_rewrite {
-    #   #   }
-    #   # }
-    #   service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
-    # }
+    path_rule {
+      paths = ["/mig/*"]
+      # route_action {
+      #   url_rewrite {
+      #   }
+      # }
+      service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
+    }
+
+    path_rule {
+      paths = ["/neg/*"]
+      # route_action {
+      #   url_rewrite {
+      #   }
+      # }
+      service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
+    }
   }
 
 }
@@ -78,6 +78,7 @@ resource "google_compute_region_health_check" "nginx_http_health_check" {
 }
 
 resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
+  count                 = var.nginx_backend_mig_id != "" ? 1 : 0
   name                  = "${var.name}-mig-backend"
   protocol              = "HTTP"
   port_name             = "http"
@@ -93,25 +94,16 @@ resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
   }
 }
 
-# resource "google_compute_region_backend_service" "nginx_gce_neg_backend" {
-#   name                  = "${var.name}-neg-backend"
-#   protocol              = "HTTP"
-#   port_name             = "http"
-#   load_balancing_scheme = "INTERNAL_MANAGED"
-#   region                = var.region
-#
-#
-#   backend {
-#     group = var.nginx_backend_neg_id
-#   }
-# }
-
-resource "google_compute_forwarding_rule" "psc_forwarding_rule" {
-  name                  = "psc-cloudrun"
+resource "google_compute_region_backend_service" "nginx_gce_neg_backend" {
+  count                 = var.nginx_backend_neg_id != "" ? 1 : 0
+  name                  = "${var.name}-neg-backend"
+  protocol              = "HTTP"
+  port_name             = "http"
+  load_balancing_scheme = "INTERNAL_MANAGED"
   region                = var.region
-  network               = var.vpc_name
-  subnetwork            = var.vpc_subnet_name
-  ports                 = ["443"]
-  target                = var.nginx_backend_neg_id
-  load_balancing_scheme = "INTERNAL"
+
+
+  backend {
+    group = var.nginx_backend_neg_id
+  }
 }
