@@ -50,4 +50,8 @@ resource "google_compute_region_network_endpoint_group" "nginx_cloudrun_neg" {
   cloud_run {
     service = google_cloud_run_v2_service.nginx_serverless.name
   }
+
+  depends_on = [
+    google_cloud_run_v2_service_iam_member.allow_gclb
+  ]
 }
