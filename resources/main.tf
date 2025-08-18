@@ -43,11 +43,12 @@ module "vpc_network" {
 }
 
 module "serverless" {
-  source          = "./modules/serverless"
-  project_id      = var.project_id
-  name            = var.name
-  region          = var.region
-  nginx_image_url = local.nginx_image_url
+  source             = "./modules/serverless"
+  project_id         = var.project_id
+  name               = var.name
+  region             = var.region
+  nginx_image_url    = local.nginx_image_url
+  cloud_run_sa_email = module.gce_instances.gce_sa_email
 }
 
 module "lb" {
@@ -59,7 +60,6 @@ module "lb" {
   region               = var.region
   nginx_backend_mig_id = module.gce_instances.nginx_mig_id
   nginx_backend_neg_id = module.serverless.nginx_neg_id
-  cloud_run_sa_email   = module.serverless.cloud_run_sa_email
 }
 
 module "gke" {

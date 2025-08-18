@@ -17,3 +17,8 @@ variable "nginx_image_url" {
   description = "The Nginx Image URL"
   type        = string
 }
+
+variable "cloud_run_sa_email" {
+  description = "SA Email we wish to give run privs to"
+  type        = string
+}

@@ -17,11 +17,13 @@ variable "region" {
 variable "nginx_backend_mig_id" {
   description = "The Nginx backend MIG Id"
   type        = string
+  default     = ""
 }
 
 variable "nginx_backend_neg_id" {
   description = "The Nginx backend NEG Id"
   type        = string
+  default     = ""
 }
 
 variable "vpc_subnet_name" {
@@ -31,11 +33,6 @@ variable "vpc_subnet_name" {
 
 variable "project_id" {
   description = "The Google Cloud project ID"
-  type        = string
-}
-
-variable "cloud_run_sa_email" {
-  description = "The Cloud Run Service Account email"
   type        = string
 }
 

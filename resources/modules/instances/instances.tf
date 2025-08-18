@@ -2,25 +2,6 @@ locals {
   nginx_instances = 1
 }
 
-# Create the service account
-resource "google_service_account" "vm_sa" {
-  account_id   = "${var.name}-vm-service-account"
-  display_name = "${var.name} VM Service Account"
-}
-
-# Give it access to Artifact Registry
-resource "google_project_iam_member" "artifactregistry_access" {
-  project = var.project_id
-  role    = "roles/artifactregistry.reader"
-  member  = "serviceAccount:${google_service_account.vm_sa.email}"
-}
-
-resource "google_project_iam_member" "logwriter_access" {
-  project = var.project_id
-  role    = "roles/logging.logWriter"
-  member  = "serviceAccount:${google_service_account.vm_sa.email}"
-}
-
 data "template_file" "nginx_startup_script" {
   template = file("${path.module}/scripts/start-container.sh.tmpl")
   vars = {
@@ -49,7 +30,7 @@ resource "google_compute_instance_template" "nginx_template" {
   }
 
   service_account {
-    email = google_service_account.vm_sa.email
+    email  = google_service_account.vm_sa.email
     scopes = ["cloud-platform"]
   }
 
