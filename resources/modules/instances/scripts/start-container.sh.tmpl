@@ -19,4 +19,4 @@ docker rm $CONTAINER_NAME || true
 docker pull $IMAGE
 
 # Run docker container
-docker run --name $CONTAINER_NAME -p 80:80 $IMAGE
+docker run -d --name $CONTAINER_NAME -p 80:80 $IMAGE
