@@ -22,7 +22,7 @@ resource "google_cloud_run_v2_service_iam_member" "allow_gclb" {
   member   = "serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
 }
 
-resource "google_cloud_run_v2_service_iam_member" "allow_gclb" {
+resource "google_cloud_run_v2_service_iam_member" "allow_gce" {
   location = var.region
   project  = var.project_id
   name     = google_cloud_run_v2_service.nginx_serverless.name
