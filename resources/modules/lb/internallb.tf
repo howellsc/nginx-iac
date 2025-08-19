@@ -7,44 +7,9 @@ resource "google_compute_subnetwork" "nginx_proxy_only" {
   role          = "ACTIVE"
 }
 
-# resource "google_compute_region_url_map" "nginx_url_map" {
-#   name            = "${var.name}-nginx-url-map"
-#   default_service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
-#   region          = var.region
-#
-#   host_rule {
-#     hosts        = ["*"]
-#     path_matcher = "all-paths"
-#   }
-#
-#   path_matcher {
-#     name            = "all-paths"
-#     default_service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
-#
-#     path_rule {
-#       paths = ["/mig/*"]
-#       # route_action {
-#       #   url_rewrite {
-#       #   }
-#       # }
-#       service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
-#     }
-#
-#     path_rule {
-#       paths = ["/neg/*"]
-#       # route_action {
-#       #   url_rewrite {
-#       #   }
-#       # }
-#       service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
-#     }
-#   }
-#
-# }
-
 resource "google_compute_region_url_map" "nginx_url_map" {
   name            = "${var.name}-nginx-url-map"
-  default_service = google_compute_region_backend_service.nginx_combined_backend.self_link
+  default_service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
   region          = var.region
 
   host_rule {
@@ -54,10 +19,42 @@ resource "google_compute_region_url_map" "nginx_url_map" {
 
   path_matcher {
     name            = "all-paths"
-    default_service = google_compute_region_backend_service.nginx_combined_backend.self_link
-  }
-}
+    default_service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
 
+    # Route for ?env=prod
+    route_rules {
+      priority = 0
+
+      match_rules {
+        prefix_match = "/"
+
+        query_parameter_matches {
+          name        = "backend"
+          exact_match = "mig"
+        }
+      }
+
+      service = google_compute_region_backend_service.nginx_gce_mig_backend.self_link
+    }
+
+    # Route for ?env=dev
+    route_rules {
+      priority = 1
+
+      match_rules {
+        prefix_match = "/"
+
+        query_parameter_matches {
+          name        = "backend"
+          exact_match = "neg"
+        }
+      }
+
+      service = google_compute_region_backend_service.nginx_gce_neg_backend.self_link
+    }
+  }
+
+}
 
 resource "google_compute_region_target_http_proxy" "nginx_http_proxy" {
   name    = "${var.name}-nginx-http-proxy"
@@ -94,53 +91,30 @@ resource "google_compute_region_health_check" "nginx_http_health_check" {
   }
 }
 
-resource "google_compute_region_backend_service" "nginx_combined_backend" {
-  name                  = "${var.name}-nginx-combined-backend"
+resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
+  name                  = "${var.name}-mig-backend"
   protocol              = "HTTP"
   port_name             = "http"
   load_balancing_scheme = "INTERNAL_MANAGED"
   region                = var.region
 
-  //health_checks = [google_compute_region_health_check.nginx_http_health_check.self_link]
+  health_checks = [google_compute_region_health_check.nginx_http_health_check.self_link]
 
   backend {
     balancing_mode  = "UTILIZATION"
     capacity_scaler = 1
     group           = var.nginx_backend_mig_id
   }
-
-  backend {
-    balancing_mode  = "UTILIZATION"
-    capacity_scaler = 1
-    group           = var.nginx_backend_neg_id
-  }
 }
 
+resource "google_compute_region_backend_service" "nginx_gce_neg_backend" {
+  name                  = "${var.name}-neg-backend"
+  protocol              = "HTTP"
+  port_name             = "http"
+  load_balancing_scheme = "INTERNAL_MANAGED"
+  region                = var.region
 
-# resource "google_compute_region_backend_service" "nginx_gce_mig_backend" {
-#   name                  = "${var.name}-mig-backend"
-#   protocol              = "HTTP"
-#   port_name             = "http"
-#   load_balancing_scheme = "INTERNAL_MANAGED"
-#   region                = var.region
-#
-#   health_checks = [google_compute_region_health_check.nginx_http_health_check.self_link]
-#
-#   backend {
-#     balancing_mode  = "UTILIZATION"
-#     capacity_scaler = 1
-#     group           = var.nginx_backend_mig_id
-#   }
-# }
-#
-# resource "google_compute_region_backend_service" "nginx_gce_neg_backend" {
-#   name                  = "${var.name}-neg-backend"
-#   protocol              = "HTTP"
-#   port_name             = "http"
-#   load_balancing_scheme = "INTERNAL_MANAGED"
-#   region                = var.region
-#
-#   backend {
-#     group = var.nginx_backend_neg_id
-#   }
-# }
+  backend {
+    group = var.nginx_backend_neg_id
+  }
+}
