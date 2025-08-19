@@ -23,7 +23,7 @@ resource "google_compute_region_url_map" "nginx_url_map" {
 
     # Route for ?env=prod
     route_rules {
-      priority = 0
+      priority = 1
 
       match_rules {
         prefix_match = "/"
@@ -39,7 +39,7 @@ resource "google_compute_region_url_map" "nginx_url_map" {
 
     # Route for ?env=dev
     route_rules {
-      priority = 1
+      priority = 2
 
       match_rules {
         prefix_match = "/"
