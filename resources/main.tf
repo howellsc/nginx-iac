@@ -61,12 +61,12 @@ module "lb" {
   nginx_backend_neg_id = module.serverless.nginx_neg_id
 }
 
-# module "gke" {
-#   source                            = "./modules/gke"
-#   name                              = var.name
-#   region                            = var.region
-#   vpc_name                          = module.vpc_network.vpc_name
-#   vpc_subnet_gke_name               = module.vpc_network.vpc_subnet_gke_name
-#   vpc_subnet_gke_secondary_ip_range = module.vpc_network.vpc_subnet_gke_secondary_ip_range
-#   nginx_image_url                   = local.nginx_image_url
-# }
+module "gke" {
+  source                            = "./modules/gke"
+  name                              = var.name
+  region                            = var.region
+  vpc_name                          = module.vpc_network.vpc_name
+  vpc_subnet_gke_name               = module.vpc_network.vpc_subnet_gke_name
+  vpc_subnet_gke_secondary_ip_range = module.vpc_network.vpc_subnet_gke_secondary_ip_range
+  nginx_image_url                   = local.nginx_image_url
+}
