@@ -21,6 +21,11 @@ resource "google_compute_instance" "nginx_standalone" {
     }
   }
 
+  service_account {
+    email  = google_service_account.vm_sa.email
+    scopes = ["cloud-platform"]
+  }
+
   network_interface {
     subnetwork = var.vpc_subnet_name
     network_ip = google_compute_address.internal_ip_nginx_standalone.address
