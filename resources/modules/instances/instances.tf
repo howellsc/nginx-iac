@@ -17,7 +17,8 @@ resource "google_compute_instance_template" "nginx_template" {
 
 
   disk {
-    source_image = "cos-cloud/cos-stable"
+    //source_image = "cos-cloud/cos-stable"
+    source_image = "ubuntu-os-cloud/ubuntu-2004-lts"
     auto_delete  = true
     boot         = true
     type         = "PERSISTENT"
