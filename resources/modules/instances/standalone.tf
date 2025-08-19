@@ -31,6 +31,8 @@ resource "google_compute_instance" "nginx_standalone" {
     network_ip = google_compute_address.internal_ip_nginx_standalone.address
   }
 
+  allow_stopping_for_update = true
+
   metadata_startup_script = <<-EOT
     #!/bin/bash
     apt-get update

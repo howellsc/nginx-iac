@@ -13,6 +13,8 @@ resource "google_compute_instance" "endpoint_tester" {
     }
   }
 
+  allow_stopping_for_update = true
+
   service_account {
     email  = google_service_account.vm_sa.email
     scopes = ["cloud-platform"]
