@@ -73,6 +73,36 @@ resource "google_compute_instance" "nginx_standalone" {
     }
     EOF
 
+    cat <<EOF > /var/www/html/index.html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Welcome to NGINX</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #f5f5f5;
+          color: #333;
+          text-align: center;
+          margin-top: 100px;
+        }
+        h1 {
+          color: #2d8cf0;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Welcome to NGINX</h1>
+      <p>Your server is running and serving content over HTTP and HTTPS on the standalone instance</p>
+    </body>
+    </html>
+    EOF
+
+    # Set permissions
+    chown -R www-data:www-data /var/www/html
+    chmod -R 755 /var/www/html
+
     systemctl restart nginx
   EOT
 }
