@@ -60,10 +60,10 @@ resource "google_compute_region_instance_group_manager" "nginx_mig" {
     port = 80
   }
 
-  auto_healing_policies {
-    health_check      = var.nginx_healthcheck_id
-    initial_delay_sec = 120
-  }
+  # auto_healing_policies {
+  #   health_check      = var.nginx_healthcheck_id
+  #   initial_delay_sec = 120
+  # }
 
   lifecycle {
     replace_triggered_by = [google_compute_instance_template.nginx_template]
