@@ -17,8 +17,7 @@ resource "google_compute_instance_template" "nginx_template" {
 
 
   disk {
-    //source_image = "cos-cloud/cos-stable"
-    source_image = "ubuntu-os-cloud/ubuntu-2004-lts"
+    source_image = "cos-cloud/cos-stable"
     auto_delete  = true
     boot         = true
     type         = "PERSISTENT"
@@ -61,10 +60,10 @@ resource "google_compute_region_instance_group_manager" "nginx_mig" {
     port = 80
   }
 
-  # auto_healing_policies {
-  #   health_check      = google_compute_region_health_check.nginx_mig_http_health_check.self_link
-  #   initial_delay_sec = 120
-  # }
+  auto_healing_policies {
+    health_check      = var.nginx_healthcheck_id
+    initial_delay_sec = 120
+  }
 
   lifecycle {
     replace_triggered_by = [google_compute_instance_template.nginx_template]
