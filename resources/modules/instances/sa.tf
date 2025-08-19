@@ -1,5 +1,6 @@
 # Create the service account
 resource "google_service_account" "vm_sa" {
+  project      = var.project_id
   account_id   = "${var.name}-vm-service-account"
   display_name = "${var.name} VM Service Account"
 }
