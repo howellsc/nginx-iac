@@ -17,3 +17,8 @@ variable "nginx_image_url" {
   description = "The Nginx Image URL"
   type        = string
 }
+
+variable "gce_sa_email" {
+  description = "GCE SA that requires access to Cloud Run Service"
+  type        = string
+}

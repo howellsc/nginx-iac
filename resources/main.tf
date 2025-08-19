@@ -48,6 +48,7 @@ module "serverless" {
   name            = var.name
   region          = var.region
   nginx_image_url = local.nginx_image_url
+  gce_sa_email    = module.gce_instances.gce_sa_email
 }
 
 module "lb" {
