@@ -51,15 +51,6 @@ resource "google_compute_instance" "nginx_standalone" {
 
     cat > /etc/nginx/sites-available/default <<EOF
     server {
-        listen 80;
-        server_name _;
-
-        location / {
-            root /var/www/html;
-            index index.html;
-        }
-    }
-    server {
         listen 443 ssl;
         server_name _;
 
@@ -94,7 +85,7 @@ resource "google_compute_instance" "nginx_standalone" {
     </head>
     <body>
       <h1>Welcome to NGINX</h1>
-      <p>Your server is running and serving content over HTTP and HTTPS on the standalone instance</p>
+      <p>Your server is running and serving content over HTTPS on the standalone instance</p>
     </body>
     </html>
     EOF
