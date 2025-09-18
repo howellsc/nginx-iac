@@ -18,6 +18,10 @@ resource "google_compute_instance" "nginx_standalone" {
     "${var.name}-allow-https-443-egress"
   ]
 
+  shielded_instance_config {
+    enable_secure_boot = true
+  }
+
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-12"

@@ -24,6 +24,10 @@ resource "google_compute_instance_template" "nginx_template" {
     disk_size_gb = 10
   }
 
+  shielded_instance_config {
+    enable_secure_boot = true
+  }
+
   network_interface {
     network    = var.vpc_name
     subnetwork = var.vpc_subnet_name

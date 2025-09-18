@@ -12,7 +12,7 @@ resource "google_compute_firewall" "http-ingress" {
   network   = google_compute_network.vpc.id
   priority  = 1000
   source_ranges = [
-    "0.0.0.0/0"
+    google_compute_subnetwork.subnet_nginx.ip_cidr_range
   ]
   target_tags = [
     "${var.name}-allow-http-80-ingress"
@@ -38,7 +38,7 @@ resource "google_compute_firewall" "https-ingress" {
   network   = google_compute_network.vpc.id
   priority  = 1000
   source_ranges = [
-    "0.0.0.0/0"
+    google_compute_subnetwork.subnet_nginx.ip_cidr_range
   ]
   target_tags = [
     "${var.name}-allow-https-443-ingress"
@@ -64,7 +64,7 @@ resource "google_compute_firewall" "https-egress" {
   network   = google_compute_network.vpc.id
   priority  = 1000
   source_ranges = [
-    "0.0.0.0/0"
+    google_compute_subnetwork.subnet_nginx.ip_cidr_range
   ]
   target_tags = [
     "${var.name}-allow-https-443-egress"
@@ -91,7 +91,7 @@ resource "google_compute_firewall" "http-egress" {
   network   = google_compute_network.vpc.id
   priority  = 1000
   source_ranges = [
-    "0.0.0.0/0"
+    google_compute_subnetwork.subnet_nginx.ip_cidr_range
   ]
   target_tags = [
     "${var.name}-allow-https-80-8080-egress"
@@ -116,7 +116,7 @@ resource "google_compute_firewall" "ssh-ingress" {
   network   = google_compute_network.vpc.id
   priority  = 1000
   source_ranges = [
-    "0.0.0.0/0"
+    google_compute_subnetwork.subnet_nginx.ip_cidr_range
   ]
   target_tags = [
     "${var.name}-allow-tcp-22-ingress"
