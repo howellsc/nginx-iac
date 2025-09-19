@@ -6,14 +6,14 @@ variable "project_id" {
 variable "region" {
   description = "The region where resources will be created"
   type        = string
-  default     = "europe-west2"
+  default     = "europe-north2"
   # Default value
 }
 
 variable "zone" {
   description = "The zone where resources will be created"
   type        = string
-  default     = "europe-west2-a"
+  default     = "europe-north2-a"
 }
 
 variable "name" {
